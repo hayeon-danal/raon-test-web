@@ -61,7 +61,7 @@ export default function KeyPad() {
 
     return (
          
-        <iframe ref={iframeRef} id="keypad_iframe" src="/keypad/index.html" onLoad={loadedContent} style={{height: '500px'}}/>
+        <iframe ref={iframeRef} id="keypad_iframe" src="/keypad/index.html" onLoad={loadedContent} style={{height: '200px'}}/>
         // <iframe ref={iframeRef} id="keypad_iframe" src="https://web-damoum.danalpay.com/keypad" />
     )
 }

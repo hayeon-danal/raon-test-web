@@ -410,7 +410,7 @@
 	width: 221px;
 	height: 24px;
 	margin: 5px;
-	background-image: url(/transkey/transkey_mobile/images/mtk_display.png);
+	background-image: url(/keypad/transkey_mobile/images/mtk_display.png);
 }
 
 .dv_transkey_licenseType {
@@ -425,7 +425,7 @@
 .dv_transkey_disp_b {
 	width: 18px;
 	height: 18px;
-	background-image: url(/transkey/transkey_mobile/images/close.png);
+	background-image: url(/keypad/transkey_mobile/images/close.png);
 	float: right;
 	margin: 5px;
 }
@@ -433,7 +433,7 @@
 .dv_transkey_disp_b_not_input{
 	width: 18px;
 	height: 18px;
-	background-image: url(/transkey/transkey_mobile/images/close.png);
+	background-image: url(/keypad/transkey_mobile/images/close.png);
 	float: right;
 	margin: 5px;
 	margin-top: 20px;

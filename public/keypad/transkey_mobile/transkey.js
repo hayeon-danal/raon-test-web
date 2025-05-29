@@ -9,9 +9,10 @@
 //config
 //setting
 var transkey_url = './transkey_mobile';
-var transkey_surl = 'http://localhost:8100/transkeyServlet';
- var transkey_apiurl = 'http://localhost:8100/transkey/api/';
-
+// var transkey_surl = 'http://localhost:8100/transkeyServlet';
+//  var transkey_apiurl = 'http://localhost:8100/transkey/api/';
+var transkey_surl = 'http://172.25.40.24:8100/transkeyServlet';
+ var transkey_apiurl = 'http://172.25.40.24:8100/transkey/api/';
 
 
 var transkey_encDelimiter = ",";
@@ -155,7 +156,6 @@ function initmTranskey(){
 		}
 		mtk=null;
 	}
-	
 	if(mtk==null){
 		transkey.objs= [];
 		mtk = new mTranskey();		
@@ -1593,6 +1593,7 @@ function mTranskey(){
 				if (request.responseText) {
 					cert_pub = request.responseText;
 					if(transkey_apiuse){
+						console.log("====1")
 						mtk.generateSessionKey(transkey_apiurl);
 					}else{
 						mtk.generateSessionKey(transkey_surl);
@@ -1600,7 +1601,7 @@ function mTranskey(){
 				}
 			}
 		};
-		
+		console.log("request.onreadystatechange ---- ", transk)
 		try {
 			if(transkey_apiuse){
 				request.send();
@@ -1691,12 +1692,13 @@ function mTranskey(){
 					var returns = "return [";
 					for(var i=0; keyboardLayouts.length>i; i++){
 						if(i==keyboardLayouts.length-1){
-							returns += keyboardLayouts[i]+",";
+							returns += keyboardLayouts[i];
 						}else{
 							returns += keyboardLayouts[i]+",";
 						}	
 					}
 					returns += "]";
+					console.log("returns === ", returns)
 					for ( var i = 0; i < result.childNodes.length; i++) {
 						var node = result.childNodes[i];
 						if (node.tagName == "script") {

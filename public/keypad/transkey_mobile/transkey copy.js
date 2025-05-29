@@ -2127,7 +2127,6 @@ function mTranskey() {
 
     if (useCORS) request.withCredentials = true;
     request.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-
     request.onreadystatechange = function () {
       if (request.readyState == 4 && request.status == 200) {
         if (request.responseText) {
