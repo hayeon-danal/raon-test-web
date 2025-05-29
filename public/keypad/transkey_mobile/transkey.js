@@ -17,7 +17,7 @@ var transkey_surl = 'http://172.25.40.24:8100/transkeyServlet';
 
 var transkey_encDelimiter = ",";
 var transkey_delimiter = '$';
-var keyboardLayouts = [ "numberMobile"];
+var keyboardLayouts = [ 'numberMobile' ];
 
 //function config
 var transkey_divType = 1;//0fixed //1flexible
@@ -54,10 +54,10 @@ tkAlert.useDivAlert = false;	//default : false | use : true | not use : false
 tkAlert.EngineVer = 93;	//chrome ver | default : 0
 //SHA-256 Hash Value for check keyboard version
 var setQwertyMobileHash = "6f37d7b161d83bbc4dad98be737315c51169cd3e4264b0bdfddfe534011dce39"; //qwertyMobileFX_space
-var setNumberMobileHash = "34f2712e546619a2831be2e59fbd95a4e5a59ae85277b545c39332adc9240b20"; //numberMobileFX
+// var setNumberMobileHash = "34f2712e546619a2831be2e59fbd95a4e5a59ae85277b545c39332adc9240b20"; //numberMobileFX
 
 //var setQwertyMobileHash = "bd61d1822484f8707f5d3564d8db199f2c07b1b1f0d5c4e897487245808802ca"; //qwertyMobileFX
-//var setNumberMobileHash = "5915c8880160c9405210946821fd475211fd0a19366aafea618b8740864b1726"; //numberMobileFX_ND
+var setNumberMobileHash = "5915c8880160c9405210946821fd475211fd0a19366aafea618b8740864b1726"; //numberMobileFX_ND
 
 //var setQwertyMobileHash = "271e590f0af979ec6886c96719568f2db099a05833e5909a93fdfc80e89167af"; //qwertyMobile
 //var setNumberMobileHash = "ca8951fb22cd0cc5c021f3c4fa0c6df389170124f7af9bccbc07884c3c8f7d39"; //numberMobile
@@ -142,6 +142,7 @@ function upListener(event) {
 }
 
 function initmTranskey(){
+	console.log("initTransKey")
 	setMaxDigits(131);
 	
 	checkCookie();
@@ -216,9 +217,9 @@ function initmTranskey(){
 	}
 }
 
-function initCallback() {
+// function initCallback() {
 	
-}
+// }
 
 if (typeof XMLHttpRequest == "undefined") {
 	XMLHttpRequest = function() {
@@ -326,7 +327,7 @@ function mTranskeyObj(inputObj, width, div, keyType, keyboardType, dataType){
 					if(reset_count>2){
 						return false;
 					}
-					mtk.tk_alert("SessionError");
+					mtk.tk_alert("11 SessionError");
 					if(transkey_apiuse){
 						mtk.resetToken(transkey_apiurl);
 						mtk.resetSessionKey(transkey_apiurl);
@@ -383,7 +384,7 @@ function mTranskeyObj(inputObj, width, div, keyType, keyboardType, dataType){
 				request.send(getUrlPost("allocation", this, this.keyType, this.allocationIndex)+"&talkBack="+this.talkBack+tk_origin);
 			}
 		} catch(e) {
-			tk_alert("[mTranskey Error] : Cannot load TransKey. Network is not available.");
+			tk_alert("11[mTranskey Error] : Cannot load TransKey. Network is not available.");
 			return false;
 		}
 	};
@@ -633,7 +634,7 @@ function mTranskeyObj(inputObj, width, div, keyType, keyboardType, dataType){
 		var request = new XMLHttpRequest();
 		if(transkey_apiuse)
 			request.open("POST", transkey_apiurl+"service/dummy", useAsyncTranskey);
-//			request.open("GET", getUrlRestApi("service/dummy", self, "")+"&talkBack="+self.talkBack+tk_origin, useAsyncTranskey);
+			// request.open("GET", getUrlRestApi("service/dummy", self, "")+"&talkBack="+self.talkBack+tk_origin, useAsyncTranskey);
 		else
 			request.open("POST", transkey_surl, useAsyncTranskey);
 		
@@ -647,7 +648,7 @@ function mTranskeyObj(inputObj, width, div, keyType, keyboardType, dataType){
 				if(request.responseText.indexOf("SessionError")>-1){
 					var errCodes = request.responseText.split("=");
 					if(errCodes[1]=="1"){
-						mtk.tk_alert("SessionError");
+						tk_alert("22SessionError");
 						if(transkey_apiuse){
 							mtk.resetToken(transkey_apiurl);
 							mtk.resetSessionKey(transkey_apiurl);
@@ -677,13 +678,15 @@ function mTranskeyObj(inputObj, width, div, keyType, keyboardType, dataType){
 		
 		try {
 			if(transkey_apiuse){
+				console.log("transkey_apiuse", getUrlRestApiPost(self, this.keyType, this.allocationIndex)+"&talkBack="+self.talkBack+tk_origin )
 				request.send(getUrlRestApiPost(self, this.keyType, this.allocationIndex)+"&talkBack="+self.talkBack+tk_origin);
 				//request.send();
 			}else{
+				console.log("transkey_apiuse else")
 				request.send(getUrlPost("getDummy", self, this.keyType ,this.allocationIndex)+"&talkBack="+self.talkBack+tk_origin);
 			}
 		} catch(e) {
-			tk_alert("[mTranskey Error] : Cannot load TransKey. Network is not available.");
+			tk_alert("22[mTranskey Error] : Cannot load TransKey. Network is not available.");
 			return false;
 		}
 	}
@@ -727,7 +730,7 @@ function mTranskeyObj(inputObj, width, div, keyType, keyboardType, dataType){
 				request.send(getUrlPost("getKeyIndex", self, this.keyType ,this.allocationIndex)+"&talkBack="+self.talkBack+tk_origin);
 			}
 		} catch(e) {
-			tk_alert("[mTranskey Error] : Cannot load TransKey. Network is not available.");
+			tk_alert("33[mTranskey Error] : Cannot load TransKey. Network is not available.");
 			return false;
 		}
 	}
@@ -751,7 +754,7 @@ function mTranskeyObj(inputObj, width, div, keyType, keyboardType, dataType){
 		try {
 			request.send();
 		} catch(e) {
-			tk_alert("[mTranskey Error] : Cannot load TransKey. Network is not available.");
+			tk_alert("44[mTranskey Error] : Cannot load TransKey. Network is not available.");
 			return false;
 		}
 		document.getElementById("initTime"+this.frmId).value = initTime;
@@ -1601,7 +1604,6 @@ function mTranskey(){
 				}
 			}
 		};
-		console.log("request.onreadystatechange ---- ", transk)
 		try {
 			if(transkey_apiuse){
 				request.send();
@@ -1609,23 +1611,26 @@ function mTranskey(){
 				request.send("op=" + operation +"&TK_requestToken="+TK_requestToken+tk_origin);
 			}
 		} catch(e) {
-			tk_alert("[mTranskey Error] : Cannot load TransKey. Network is not available.");
+			tk_alert("55[mTranskey Error] : Cannot load TransKey. Network is not available.");
 			return false;
 		}
 	};
 	
 	this.generateSessionKey = function(url) {
-		
+		console.log("222 genrateSessionKey()")
 		if(genSessionKey.length>0)
 			return true;
 		
 		if(useGenKey){
+			console.log("useGenKey")
 			if(cert_pub.indexOf("Error")>-1) {
-				tk_alert("[mTranskey Error] : Cannot load TransKey. Network is not available.");
+				tk_alert("66[mTranskey Error] : Cannot load TransKey. Network is not available.");
 				return false;
 			}
 			var pKey = cert_pub.split(transkey_delimiter);
 		} else {
+			console.log("verifyCA")
+
 			if( verifyCA() == false ){
 				tk_alert("CA 검증이 실패 하였습니다. 프로그램이 정상작동 하지 않을 수 있습니다.");
 				return false;
@@ -1638,7 +1643,7 @@ function mTranskey(){
 		var e = pKey[1];
 		
 		this.transkeyUuid = genKey.tk_sh1prng();
-		
+		console.log("this.transkeyUuid === ", this.transkeyUuid)
 		
 		genSessionKey = genKey.GenerateKey(128);
 		
@@ -1669,6 +1674,7 @@ function mTranskey(){
 		if(useCORS)
 			request.withCredentials = true; 
 		request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
 		request.onreadystatechange = function(){
 			if (request.readyState == 4 && request.status == 200) {
 				if(request.responseText.indexOf("LicenseError")>-1){
@@ -1689,16 +1695,17 @@ function mTranskey(){
 				if (request.responseXML) {
 					var result = request.responseXML.firstChild;
 					var res = null;
-					var returns = "return [";
+					var returns = 'return [';
 					for(var i=0; keyboardLayouts.length>i; i++){
 						if(i==keyboardLayouts.length-1){
 							returns += keyboardLayouts[i];
 						}else{
-							returns += keyboardLayouts[i]+",";
+							returns += keyboardLayouts[i]+',';
 						}	
 					}
-					returns += "]";
-					console.log("returns === ", returns)
+					returns += ']';
+					console.log("request.responseXML.firstChild ==== ", request.responseXML)
+
 					for ( var i = 0; i < result.childNodes.length; i++) {
 						var node = result.childNodes[i];
 						if (node.tagName == "script") {
@@ -1929,7 +1936,7 @@ function mTranskey(){
 				request.send("op=" + operation + "&key=" + encSessionKey + "&transkeyUuid=" + this.transkeyUuid+ "&useCert=" + useCert+"&TK_requestToken="+TK_requestToken+ "&mode=Mobile"+tk_origin);
 			}
 		} catch(e) {
-			tk_alert("[mTranskey Error] : Cannot load TransKey. Network is not available.");
+			tk_alert("88[mTranskey Error] : Cannot load TransKey. Network is not available.");
 			return false;
 		}
 	};
@@ -1942,7 +1949,7 @@ function mTranskey(){
 		if(useCORS)
 			request.withCredentials = true; 
 		if(transkey_apiuse){
-			request.open("GET", url+"/service/token?"+new Date().getTime()+tk_origin, false);	
+			request.open("GET", url+"service/token?"+new Date().getTime()+tk_origin, false);	
 		}else{
 			request.open("GET", url+"?op=getToken&"+new Date().getTime()+tk_origin, false);	
 		}
@@ -1962,7 +1969,7 @@ function mTranskey(){
 		try {
 			request.send();
 		} catch(e) {
-			tk_alert("[mTranskey Error] : Cannot load TransKey. Network is not available.");
+			tk_alert("99[mTranskey Error] : Cannot load TransKey. Network is not available.");
 			return false;
 		}
 	}
@@ -1996,11 +2003,12 @@ function mTranskey(){
 				operation = "sessionkey";
 			}
 		}
+		console.log("resetSessionKey === operation, ", operation)
 		var request = new XMLHttpRequest();
 		if(useCORS)
 			request.withCredentials = true; 
 		if(transkey_apiuse)
-			request.open("GET", url+"/service"+operation+"?key=" + encSessionKey + "&transkeyUuid=" + this.transkeyUuid+ "&useCert=" + useCert+"&TK_requestToken="+TK_requestToken+ "&mode=Mobile"+tk_origin, useAsyncTranskey);
+			request.open("GET", url+"service/"+operation+"?key=" + encSessionKey + "&transkeyUuid=" + this.transkeyUuid+ "&useCert=" + useCert+"&TK_requestToken="+TK_requestToken+ "&mode=Mobile"+tk_origin, useAsyncTranskey);
 		else
 			request.open("POST", url, useAsyncTranskey);
 		
@@ -2032,7 +2040,7 @@ function mTranskey(){
 				request.send("op=" + operation + "&key=" + encSessionKey + "&transkeyUuid=" + this.transkeyUuid+ "&useCert=" + useCert+"&TK_requestToken="+TK_requestToken+ "&mode=Mobile"+tk_origin);
 			}
 		} catch(e) {
-			tk_alert("[mTranskey Error] : Cannot load TransKey. Network is not available.");
+			tk_alert("10[mTranskey Error] : Cannot load TransKey. Network is not available.");
 			return false;
 		}
 	};
@@ -2457,7 +2465,7 @@ function mTranskey(){
 				if(request.responseText.indexOf("SessionError")>-1){
 					var errCodes = request.responseText.split("=");
 					if(errCodes[1]=="1"){
-						mtk.tk_alert("SessionError");
+						tk_alert("33SessionError");
 						mtk.now.clear();
 						if(transkey_apiuse){
 							mtk.resetToken(transkey_apiurl);
@@ -2559,7 +2567,7 @@ function mTranskey(){
 				}
 			}
 		} catch(e) {
-			tk_alert("[mTranskey Error] : Cannot load TransKey. Network is not available.");
+			tk_alert("12[mTranskey Error] : Cannot load TransKey. Network is not available.");
 			return false;
 		}
 	};

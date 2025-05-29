@@ -62,6 +62,7 @@
 
         mtk.startCallBack = () => {
           const length = document.getElementById('pwd').value.length;
+          console.log("StartCallback", length)
           const message = {
             status: 'changeInput',
             value: length
@@ -81,7 +82,7 @@
           window.parent.postMessage(message, '*');
         };
 
-        mtk.bioAuthCallBack = bioAuthCallBack;
+        // mtk.bioAuthCallBack = bioAuthCallBack;
       }
 
       function bioAuthCallBack() {
