@@ -1,0 +1,180 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xml:lang="ko" xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta
+      name="viewport"
+      content="user-scalable=no,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,width=device-width"
+    />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <script type="text/javascript" src="./transkey_mobile/transkey.js"></script>
+    <link rel="stylesheet" type="text/css" href="./transkey_mobile/transkey.css" />
+  </head>
+  <body
+    tabindex="0"
+    oncontextmenu="return false"
+    onselectstart="return false"
+    ondragstart="return false"
+    style="margin: 0px; background-color: transparent"
+    onload="initmTranskey();"
+  >
+    <div></div>
+    <div style="position: relative; padding: 0 0 35px 0">
+      <form id="frm" name="frm">
+        <div style="margin: 0; text-align: center" auto;>
+          <input
+            type="password"
+            name="pwd"
+            id="pwd"
+            style="display: block"
+            data-tk-kbdType="number"
+            data-tk-bottom="true"
+            oninput="onKeyDown()"
+            onfocus="mtk.onKeyboard(this);"
+          />
+        </div>
+      </form>
+    </div>
+
+    <script type="text/javascript">
+      var useBioAuthentication = false;
+
+      function clear() {
+        const element = document.getElementById('pwd');
+        element.value = '';
+
+        const message = {
+          status: 'changeInput',
+          value: element.value.length
+        };
+        mtk.now.clear();
+        window.parent.postMessage(message, '*');
+      }
+
+      function initCallback() {
+        const message = {
+          status: 'init',
+          value: true
+        };
+        console.log("initCallback")
+        window.parent.postMessage(message, '*');
+
+        mtk.startCallBack = () => {
+          const length = document.getElementById('pwd').value.length;
+          const message = {
+            status: 'changeInput',
+            value: length
+          };
+          window.parent.postMessage(message, '*');
+        };
+
+        mtk.doneCallBack = showKeyboard;
+        mtk.closeCallback = showKeyboard;
+
+        mtk.delCallBack = () => {
+          const length = document.getElementById('pwd').value.length;
+          const message = {
+            status: 'changeInput',
+            value: length
+          };
+          window.parent.postMessage(message, '*');
+        };
+
+        mtk.bioAuthCallBack = bioAuthCallBack;
+      }
+
+      function bioAuthCallBack() {
+        const message = {
+          status: 'bioAuthentication',
+          value: ''
+        };
+        window.parent.postMessage(message, '*');
+      }
+
+      function showKeyboard() {
+
+        console.log("Transkey", transkey)
+        console.log("mtk====", transkey['pwd'])
+        setTimeout(() => {
+          // mtk.setUseBioAuthentication(useBioAuthentication);
+          transkey['pwd'].useTranskey = true;
+          mtk.onKeyboard(transkey['pwd'].inputObj);
+        }, 150);
+      }
+
+      function request() {
+        mtk.fillEncData();
+        const values = mtk.inputFillEncData(document.getElementById('pwd'));
+        const name = document.getElementById("pwd").name; 
+        const hidden = values.hidden;
+        const hmac = values.hmac;
+        const frmId = use_form_id?"_"+document.getElementById("hidfrmId").value:"";
+	      const exe2e = transkey['pwd'].exE2E;
+        // const seedKey = document.getElementById('seedKey').value;
+        // const keyIndex = document.getElementById('keyIndex_pwd').value;
+        // const initTime = document.getElementById('initTime').value;
+        // const keyboardType = document.getElementById('keyboardType_pwd').value;
+        // const fieldType = document.getElementById('fieldType_pwd').value;
+        console.log("request ---- ",values)
+        const searchparam = new URLSearchParams({
+          encoded: hidden,
+          hmEncoded: hmac,
+          // seedKey: seedKey,
+          keyIndex: keyIndex,
+          initTime: initTime,
+          keyboardType: keyboardType,
+          fieldType: fieldType
+        });
+
+        const value = {
+          encoded: searchparam.get('encoded'),
+          hmEncoded: searchparam.get('hmEncoded'),
+          seedKey: searchparam.get('seedKey'),
+          keyIndex: searchparam.get('keyIndex'),
+          initTime: searchparam.get('initTime'),
+          keyboardType: searchparam.get('keyboardType'),
+          fieldType: searchparam.get('fieldType')
+        };
+
+        const message = {
+          status: 'requestValue',
+          value: value
+        };
+
+        clear();
+        window.parent.postMessage(message, '*');
+      }
+
+      function receiveMessage(event) {
+        const status = event.data.command;
+
+        switch (status) {
+          case 'clear':
+            clear();
+            break;
+          case 'requestValue':
+            request();
+            break;
+          case 'showKeyboard':
+            if (event.data.params) {
+              const params = JSON.parse(event.data.params);
+              if (params.useBioAuthentication) {
+                useBioAuthentication = params.useBioAuthentication;
+                console.log(useBioAuthentication);
+              }
+            }
+
+            showKeyboard();
+            break;
+          case 'hideKeyboard':
+            break;
+          case 'bioAuthentication':
+            break;
+        }
+      }
+
+      window.addEventListener('message', receiveMessage);
+    </script>
+  </body>
+</html>
