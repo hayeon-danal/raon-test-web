@@ -10,9 +10,21 @@
 //setting
 var transkey_url = './transkey_mobile';
 // var transkey_surl = 'http://localhost:8100/transkeyServlet';
-//  var transkey_apiurl = 'http://localhost:8100/transkey/api/';
-var transkey_surl = 'http://172.25.40.24:8100/transkeyServlet';
- var transkey_apiurl = 'http://172.25.40.24:8100/transkey/api/';
+// var transkey_apiurl = 'http://localhost:8100/transkey/api/';
+// var tk_origin = '&origin=0';
+
+var transkey_surl = 'https://keypad-dev.danalpay.com:8100/transkeyServlet';
+var transkey_apiurl = 'https://keypad-dev.danalpay.com:8100/transkey/api/';
+var tk_origin = '&origin=0';
+
+
+
+// var transkey_surl = 'http://172.25.40.24:8100/transkeyServlet';
+//  var transkey_apiurl = 'http://172.25.40.24:8100/transkey/api/';
+// var tk_origin = '&origin=3';
+
+// var transkey_surl = 'https://authpin-dev.danalpay.com/transkeyServlet';
+// var transkey_apiurl = 'https://authpin-dev.danalpay.com/transkey/api/';
 
 
 var transkey_encDelimiter = ",";
@@ -39,7 +51,6 @@ var useSha2 = true; //4.6.14.9 이하 모듈 : false
 
 //cors
 var useCORS = true;
-var tk_origin = '&origin=1';
 
 //ui
 var tk_comments = "";
@@ -53,6 +64,7 @@ var tkAlert = {};
 tkAlert.useDivAlert = false;	//default : false | use : true | not use : false
 tkAlert.EngineVer = 93;	//chrome ver | default : 0
 //SHA-256 Hash Value for check keyboard version
+
 var setQwertyMobileHash = "6f37d7b161d83bbc4dad98be737315c51169cd3e4264b0bdfddfe534011dce39"; //qwertyMobileFX_space
 // var setNumberMobileHash = "34f2712e546619a2831be2e59fbd95a4e5a59ae85277b545c39332adc9240b20"; //numberMobileFX
 
@@ -1596,7 +1608,6 @@ function mTranskey(){
 				if (request.responseText) {
 					cert_pub = request.responseText;
 					if(transkey_apiuse){
-						console.log("====1")
 						mtk.generateSessionKey(transkey_apiurl);
 					}else{
 						mtk.generateSessionKey(transkey_surl);
@@ -1611,6 +1622,7 @@ function mTranskey(){
 				request.send("op=" + operation +"&TK_requestToken="+TK_requestToken+tk_origin);
 			}
 		} catch(e) {
+			console.log("55 transkey error ::::", e)
 			tk_alert("55[mTranskey Error] : Cannot load TransKey. Network is not available.");
 			return false;
 		}

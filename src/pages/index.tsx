@@ -53,7 +53,6 @@ export default function KeyPad() {
 					const iframe = iframeRef.current;
         console.log("==========", iframe?.contentWindow?.location)
 
-					// iframe.contentWindow?.location.replace("http://localhost:3000/keypad")
 					// iframe.contentWindow?.location.replace("https://web-damoum.danalpay.com/keypad")
 					// iframe.contentWindow?.postMessage({command: "showKeyboard"}, '*')
         }
