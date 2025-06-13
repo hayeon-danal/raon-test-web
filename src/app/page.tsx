@@ -1,77 +1,49 @@
-"use client"
+"use client";
 
-
-import { useEffect, useRef } from 'react';
-import IframeController, { IframeControllerHandle } from '@/components/IframeController';
+import { useEffect, useRef, useState } from "react";
+import IframeController, {
+  IframeControllerHandle,
+} from "@/components/IframeController";
 
 export default function KeyPad() {
-    const iframeRef = useRef<IframeControllerHandle>(null);
+  const iframeRef = useRef<IframeControllerHandle>(null);
 
-    const handleShowKeyboard = () => {
-        iframeRef.current?.emit('showKeyboard');
-    };
-    const handleIframeLoad = () => {
-        const iframe = iframeRef.current;
-        console.log("handleIframeLoad")
-        if (!iframe) {
-            console.warn("iframeRef.current가 null입니다.");
-            return;
-        }
+  useEffect(() => {
+    const handleMessage = (event: MessageEvent) => {
+      console.log("부모가 받은 응답", event.data); // 여기서 로그 찍혀야 함
+      if (event.data.status === "changeInput" && event.data.value === 6) {
+        requestValues();
+        console.log("해당 조건에 다음 페이지로 이동되어야 함");
+      }
 
-        console.log("✅ iframe 로드됨, showKeyboard 메시지 전송");
-        iframe.emit('showKeyboard');
+      if (event.data.status === "requestValue") {
+        console.log("이 때 값을 서버에 넘겨야 함");
+      }
     };
 
-    const requestValues = () => {
-        iframeRef.current?.emit('requestValues');
-    }
+    window.addEventListener("message", handleMessage);
+    return () => window.removeEventListener("message", handleMessage);
+  }, []);
 
-    // const keypadEvent = (event: MessageEvent) => {
-    //     event.preventDefault();
-    //     const status = event.data.status as string;
-    //     const value = event.data.value;
+  const requestValues = () => {
+    iframeRef.current?.emit("requestValue");
+  };
 
-    //     switch (status) {
-    //         case 'init':
-    //             emits('keypadInitialized', value as boolean);
-    //             break;
-    //         case 'changeInput':
-    //             emits('changeLength', value as number);
-    //             break;
-    //         case 'requestValue':
-    //             emits('requestValues', value);
-    //             break;
-    //         case 'bioAuthentication':
-    //             emits('bioAuthentication');
-    //             break;
-    //     }
-    // }
+  useEffect(() => {
+    // 키패드 바로 뜨도록
+    iframeRef.current?.emit("showKeyboard");
+  }, []);
 
-    // useEffect(() => {
-    //     const iframe = iframeRef.current;
-    //     if (!iframe) return;
-
-    //     iframe.onload = () => {
-    //         iframe.contentWindow?.postMessage({ type: 'showKeyboard' }, '*');
-    //         console.log('✅ 메시지 전송 완료 (showKeyboard)');
-    //     };
-
-    // }, [])
-
-
-    return (
-        <main>
-            <div style={{ marginBottom: '16px' }}>
-                <button onClick={handleShowKeyboard}>showKeyboard</button>
-                <button onClick={requestValues}>requestValues</button>
-                {/* <button onClick={handleInitForm}>initForm</button>
-                <button onClick={handlePrint}>print</button> */}
-            </div>
-
-            <IframeController ref={iframeRef} onLoad={handleIframeLoad} src="/keypad/index.html" />
-        </main>
-        // <iframe ref={iframeRef} id="keypad_iframe" src="/keypad/index.html" style={{ height: '100%' }} />
-        // <iframe ref={iframeRef} id="keypad_iframe" src="https://web-damoum.danalpay.com/keypad" />
-    )
-
+  return (
+    <main>
+      <div style={{ marginBottom: "16px" }}>
+        <button onClick={requestValues}>requestValues</button>
+      </div>
+      <div style={{ width: "360px" }}>
+        <IframeController ref={iframeRef} />
+      </div>
+    </main>
+    // <iframe ref={iframeRef} id="keypad_iframe" src="/keypad/index.html" style={{ height: '100%' }} />
+    // <iframe ref={iframeRef} id="keypad_iframe" src="https://web-damoum.danalpay.com/keypad" />
+  );
 }

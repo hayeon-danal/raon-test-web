@@ -1,47 +1,47 @@
-'use client';
+"use client";
 
-import { forwardRef, useRef, useImperativeHandle } from 'react';
+import { forwardRef, useRef, useImperativeHandle } from "react";
+
+type TestType = {
+  (e: "requestValues", value: any): void;
+};
 
 export type IframeEventPayload = {
-    type: string;
-    payload?: any;
+  type: string;
+  value?: any;
 };
 
 export type IframeControllerHandle = {
-    emit: (event: string, payload?: any) => void;
+  emit: (event: string, value?: any) => void;
 };
 
 type Props = {
-    src: string;
-    width?: number | string;
-    height?: number | string;
-    onLoad?: () => void;
+  width?: number | string;
+  height?: number | string;
+  onLoad?: () => void;
 };
 
 const IframeController = forwardRef<IframeControllerHandle, Props>(
-    ({ src, width = '100%', height = 500, onLoad }, ref) => {
-        const iframeRef = useRef<HTMLIFrameElement>(null);
-        useImperativeHandle(ref, () => ({
-            emit: (type, payload) => {
-                iframeRef.current?.contentWindow?.postMessage({ type, payload }, '*');
-            },
-        }));
+  ({ width = "100%", height = 200, onLoad }, ref) => {
+    const iframeRef = useRef<HTMLIFrameElement>(null);
+    useImperativeHandle(ref, () => ({
+      emit: (type, value) => {
+        iframeRef.current?.contentWindow?.postMessage({ type, value }, "*");
+      },
+    }));
 
-        return (
-            <iframe
-                ref={iframeRef}
-                src={src}
-                width={width}
-                height={height}
-                onLoad={onLoad}
-                frameBorder="0"
-
-                sandbox="allow-scripts allow-same-origin"
-            />
-        );
-    }
+    return (
+      <iframe
+        ref={iframeRef}
+        src="/keypad/index.html"
+        onLoad={onLoad}
+        width={width}
+        height={height}
+        style={{ border: "none" }}
+        sandbox="allow-scripts allow-same-origin allow-modals"
+      />
+    );
+  }
 );
-
-IframeController.displayName = 'IframeController';
 
 export default IframeController;

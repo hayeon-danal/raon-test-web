@@ -586,7 +586,7 @@ img {
     height: 255px; /*pattern div height*/
   }
   .dv_transkey_div_nHeight {
-    height: 240px; /*number div height*/
+    /* height: 240px; number div height */
   }
   .dv_transkey_div_nHeight2 {
     height: 203px; /*number div height*/
@@ -685,7 +685,7 @@ img {
     height: 295px; /*pattern div height*/
   }
   .dv_transkey_div_nHeight {
-    height: 280px; /*number div height*/
+    /* height: 280px; number div height */
   }
   .dv_transkey_div_nHeight2 {
     height: 243px; /*number div height*/
@@ -784,7 +784,7 @@ img {
     height: 235px; /*pattern div height*/
   }
   .dv_transkey_div_nHeight {
-    height: 220px; /*number div height*/
+    /* height: 220px; number div height */
   }
   .dv_transkey_div_nHeight2 {
     height: 183px; /*number div height*/
