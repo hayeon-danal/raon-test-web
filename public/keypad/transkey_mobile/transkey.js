@@ -13,15 +13,10 @@ var transkey_url = './transkey_mobile';
 // var transkey_apiurl = 'http://localhost:8100/transkey/api/';
 // var tk_origin = '&origin=0';
 
-var transkey_surl = 'https://keypad-dev.danalpay.com:8100/transkeyServlet';
-var transkey_apiurl = 'https://keypad-dev.danalpay.com:8100/transkey/api/';
-var tk_origin = '&origin=0';
+var transkey_surl = 'https://keypad-dev.danalpay.com/transkeyServlet';
+var transkey_apiurl = 'https://keypad-dev.danalpay.com/transkey/api/';
+var tk_origin = '&origin=6';
 
-
-
-// var transkey_surl = 'http://172.25.40.24:8100/transkeyServlet';
-//  var transkey_apiurl = 'http://172.25.40.24:8100/transkey/api/';
-// var tk_origin = '&origin=3';
 
 // var transkey_surl = 'https://authpin-dev.danalpay.com/transkeyServlet';
 // var transkey_apiurl = 'https://authpin-dev.danalpay.com/transkey/api/';
