@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import IframeController, {
   IframeControllerHandle,
 } from "@/components/IframeController";
@@ -15,9 +15,11 @@ type Payload = {
   frmId: string;
 };
 
-
-const sendEncryptedValuesToServer = async (payload:Payload, sessionId: string) => {
-  console.log("payload::: ", payload, sessionId)
+const sendEncryptedValuesToServer = async (
+  payload: Payload,
+  sessionId: string
+) => {
+  console.log("payload::: ", payload, sessionId);
   const body = {
     transkeyId: payload.id,
     transkeyName: payload.name,
@@ -26,26 +28,26 @@ const sendEncryptedValuesToServer = async (payload:Payload, sessionId: string) =
     hmEncoded: payload.hmEncoded,
     exe2e: payload.exe2e,
     transkeyUuid: payload.transkeyUuid,
-    sessionId: sessionId
+    sessionId: sessionId,
   };
-  console.log("body:::" , body)
+  console.log("body:::", body);
   // console.log("Session::: ", document.cookie)
   try {
-    const res = await fetch('http://localhost:8070/api/v1/pin/decode', {
-      method: 'POST',
+    const res = await fetch("http://localhost:8070/api/v1/pin/decode", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(body),
       credentials: "include",
     });
 
     const result = await res.text();
-    console.log('✅ 서버 응답:', result);
-    alert('복호화된 값: ' + result);
+    console.log("✅ 서버 응답:", result);
+    alert("복호화된 값: " + result);
   } catch (error) {
-    console.error('❌ 서버 요청 실패:', error);
-    alert('서버 통신 오류');
+    console.error("❌ 서버 요청 실패:", error);
+    alert("서버 통신 오류");
   }
 };
 
@@ -55,40 +57,37 @@ type Props = {
 export default function KeyPad({ sessionId }: Props) {
   const iframeRef = useRef<IframeControllerHandle>(null);
 
-  useEffect(() => {
-    const handleMessage = (event: MessageEvent) => {
-      console.log("부모가 받은 응답", event.data); // 여기서 로그 찍혀야 함
-      if (event.data.status === "changeInput" && event.data.value === 6) {
-        requestValues();
-        console.log("해당 조건에 다음 페이지로 이동되어야 함");
-      }
+  // useEffect(() => {
+  //   const handleMessage = (event: MessageEvent) => {
+  //     console.log("부모가 받은 응답", event.data); // 여기서 로그 찍혀야 함
+  //     if (event.data.status === "changeInput" && event.data.value === 6) {
+  //       requestValues();
+  //       console.log("해당 조건에 다음 페이지로 이동되어야 함");
+  //     }
 
-      if (event.data.status === "requestValue") {
-        console.log("이 때 값을 서버에 넘겨야 함");
-        // 값이 함께 전달되었는지 확인
-        if (event.data.value && sessionId) {
-          sendEncryptedValuesToServer(event.data.value, sessionId );
-        } else {
-          console.warn('payload 없음');
-        }
+  //     if (event.data.status === "requestValue") {
+  //       console.log("이 때 값을 서버에 넘겨야 함");
+  //       // 값이 함께 전달되었는지 확인
+  //       if (event.data.value && sessionId) {
+  //         sendEncryptedValuesToServer(event.data.value, sessionId);
+  //       } else {
+  //         console.warn("payload 없음");
+  //       }
+  //     }
+  //   };
 
-      }
-    };
-
-    window.addEventListener("message", handleMessage);
-    return () => window.removeEventListener("message", handleMessage);
-  }, []);
+  //   window.addEventListener("message", handleMessage);
+  //   return () => window.removeEventListener("message", handleMessage);
+  // }, []);
 
   const requestValues = () => {
-    iframeRef.current?.emit("requestValue");
+    iframeRef.current?.requestValue();
   };
 
   useEffect(() => {
     // 키패드 바로 뜨도록
-    iframeRef.current?.emit("showKeyboard");
+    iframeRef.current?.showKeyboard();
   }, []);
-
-
 
   return (
     <main>
