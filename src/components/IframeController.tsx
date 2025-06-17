@@ -21,11 +21,10 @@ type Props = {
   width?: number | string;
   height?: number | string;
   onLoad?: () => void;
-  // onReceiveMessage: (data: any) => void;
 };
 
 const IframeController = forwardRef<IframeControllerHandle, Props>(
-  ({ width = "100%", height = 200, onLoad, onReceiveMessage }, ref) => {
+  ({ width = "100%", height = 200, onLoad }, ref) => {
     const iframeRef = useRef<HTMLIFrameElement>(null);
     useImperativeHandle(ref, () => ({
       emit: (type, value) => {

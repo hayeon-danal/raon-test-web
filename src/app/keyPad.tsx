@@ -52,33 +52,33 @@ const sendEncryptedValuesToServer = async (
 };
 
 type Props = {
-  sessionId: string | null;
+  sessionId: string | undefined;
 };
 export default function KeyPad({ sessionId }: Props) {
   const iframeRef = useRef<IframeControllerHandle>(null);
 
-  // useEffect(() => {
-  //   const handleMessage = (event: MessageEvent) => {
-  //     console.log("부모가 받은 응답", event.data); // 여기서 로그 찍혀야 함
-  //     if (event.data.status === "changeInput" && event.data.value === 6) {
-  //       requestValues();
-  //       console.log("해당 조건에 다음 페이지로 이동되어야 함");
-  //     }
+  useEffect(() => {
+    const handleMessage = (event: MessageEvent) => {
+      console.log("부모가 받은 응답", event.data); // 여기서 로그 찍혀야 함
+      if (event.data.status === "changeInput" && event.data.value === 6) {
+        requestValues();
+        console.log("해당 조건에 다음 페이지로 이동되어야 함");
+      }
 
-  //     if (event.data.status === "requestValue") {
-  //       console.log("이 때 값을 서버에 넘겨야 함");
-  //       // 값이 함께 전달되었는지 확인
-  //       if (event.data.value && sessionId) {
-  //         sendEncryptedValuesToServer(event.data.value, sessionId);
-  //       } else {
-  //         console.warn("payload 없음");
-  //       }
-  //     }
-  //   };
+      if (event.data.status === "requestValue") {
+        console.log("이 때 값을 서버에 넘겨야 함");
+        // 값이 함께 전달되었는지 확인
+        if (event.data.value && sessionId) {
+          sendEncryptedValuesToServer(event.data.value, sessionId);
+        } else {
+          console.warn("payload 없음");
+        }
+      }
+    };
 
-  //   window.addEventListener("message", handleMessage);
-  //   return () => window.removeEventListener("message", handleMessage);
-  // }, []);
+    window.addEventListener("message", handleMessage);
+    return () => window.removeEventListener("message", handleMessage);
+  }, []);
 
   const requestValues = () => {
     iframeRef.current?.requestValue();

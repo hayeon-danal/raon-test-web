@@ -6335,6 +6335,7 @@ function mTranskey() {
   }
 
   function numberMobileNDLayoutForDIV(id, cssText) {
+    console.log("numberMobileNDLayoutForDIV cssText", cssText);
     var layout = '<div id="mtk_disp" class="dv_' + cssText + '_disp">';
 
     if (
@@ -6512,13 +6513,15 @@ function mTranskey() {
       cssText +
       '_div2_Height"  ' +
       startEvent +
-      '="mtk.del(event, this);"' +
+      // '="mtk.del(event, this);"' +
+      " " +
       endEvent +
-      '="balloonRemove();"  aria-label="삭제"><div class="dv_' +
+      '="balloonRemove();"  aria-label=""><div class="dv_' +
       cssText +
       "_div2_3 dv_" +
       cssText +
-      '_div2_2_nTop" style="background-position:-37px -203px;"></div></a>' +
+      // '_div2_2_nTop" style="background-position:-37px -203px;"></div></a>' +
+      '_div2_2_nTop" style="background-position: 999px;"></div></a>' +
       '<a class="dv_' +
       cssText +
       "_div3 dv_" +
@@ -6542,13 +6545,14 @@ function mTranskey() {
       cssText +
       '_div2_Height" ' +
       startEvent +
-      '="mtk.done(event, this);"' +
+      // '="mtk.done(event, this);"' +
+      '="mtk.del(event, this);"' +
       endEvent +
-      '="balloonRemove();"  aria-label="확인"><div class="dv_' +
+      '="balloonRemove();"  aria-label="삭제"><div class="dv_' +
       cssText +
       "_div3_4 dv_" +
       cssText +
-      '_div3_3_nTop" style="background-position:-243px -206px;"></div></a>' +
+      '_div3_3_nTop" style="background-position:-35px -203px;"></div></a>' +
       "</div>";
     if (showLicense && mtk.licenseType != "")
       layout +=

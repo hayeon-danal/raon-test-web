@@ -888,6 +888,7 @@ img {
   border-color: transparent;
   z-index: 9999;
   display: none;
+  width: 100%;
 }
 
 .transkey_warning {
